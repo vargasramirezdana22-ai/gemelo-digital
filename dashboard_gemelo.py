@@ -649,7 +649,7 @@ app = dash.Dash(
     suppress_callback_exceptions=True,
     title="Gemelo Digital — Dora del Hoyo",
 )
-
+server = app.server
 # ─── Barra de navegación lateral ─────────────────────────────────────────────
 
 NAV_ITEMS = [
@@ -1169,14 +1169,4 @@ print("═"*60 + "\n")
 _t = threading.Thread(target=_run_app, daemon=True)
 _t.start()
 
-# Acceso desde Colab vía iframe
-try:
-    from google.colab.output import eval_js
-    _url = eval_js("google.colab.kernel.proxyPort(8050)")
-    print(f"✅ Dashboard disponible en: {_url}")
-    from IPython.display import IFrame, display
-    display(IFrame(src=_url, width="100%", height="900px"))
-except Exception:
-    print("▶ Si estás en Colab, instala pyngrok para acceso externo.")
-    print("  O abre: http://127.0.0.1:8050 en tu navegador local.")
-    import time; time.sleep(2)  # Dar tiempo al servidor para arrancar
+
