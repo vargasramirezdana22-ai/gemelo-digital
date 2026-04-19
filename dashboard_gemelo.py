@@ -1150,23 +1150,13 @@ def _no_data_msg():
                         "fontFamily":"IBM Plex Mono, monospace","marginTop":"6px"}),
     ])
 
+def _run():
+# ═══════════════════════════════════════════════════════
+# PUNTO DE ENTRADA (Render compatible)
+# ═══════════════════════════════════════════════════════
 
-# ─────────────────────────────────────────────────────────────────────────────
-# PUNTO DE ENTRADA
-# ─────────────────────────────────────────────────────────────────────────────
-
-# ── Lanzador para Colab (threading para no bloquear el kernel) ────────────────
-import threading
-
-def _run_app():
-    app.run(debug=False, port=8050, host="0.0.0.0", use_reloader=False)
-
-print("\n" + "═"*60)
-print("  GEMELO DIGITAL — DORA DEL HOYO")
-print("  Iniciando servidor en http://127.0.0.1:8050")
-print("═"*60 + "\n")
-
-_t = threading.Thread(target=_run_app, daemon=True)
-_t.start()
-
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 8050))
+    app.run(debug=False, host="0.0.0.0", port=port)
 
