@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: gemelo-digital
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python dashboard_gemelo.py
