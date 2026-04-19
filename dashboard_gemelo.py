@@ -1155,9 +1155,28 @@ def _no_data_msg():
 # PUNTO DE ENTRADA
 # ─────────────────────────────────────────────────────────────────────────────
 
-if __name__ == "__main__":
-    print("\n" + "═"*60)
-    print("  GEMELO DIGITAL — DORA DEL HOYO")
-    print("  Dashboard Dash disponible en http://127.0.0.1:8050")
-    print("═"*60 + "\n")
-    app.run(debug=False, port=8050, host="0.0.0.0")
+# ── Lanzador para Colab (threading para no bloquear el kernel) ────────────────
+import threading
+
+def _run_app():
+    app.run(debug=False, port=8050, host="0.0.0.0", use_reloader=False)
+
+print("\n" + "═"*60)
+print("  GEMELO DIGITAL — DORA DEL HOYO")
+print("  Iniciando servidor en http://127.0.0.1:8050")
+print("═"*60 + "\n")
+
+_t = threading.Thread(target=_run_app, daemon=True)
+_t.start()
+
+# Acceso desde Colab vía iframe
+try:
+    from google.colab.output import eval_js
+    _url = eval_js("google.colab.kernel.proxyPort(8050)")
+    print(f"✅ Dashboard disponible en: {_url}")
+    from IPython.display import IFrame, display
+    display(IFrame(src=_url, width="100%", height="900px"))
+except Exception:
+    print("▶ Si estás en Colab, instala pyngrok para acceso externo.")
+    print("  O abre: http://127.0.0.1:8050 en tu navegador local.")
+    import time; time.sleep(2)  # Dar tiempo al servidor para arrancar
